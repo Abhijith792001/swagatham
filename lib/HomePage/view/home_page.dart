@@ -1,0 +1,93 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:swagatham/routes/app_routes.dart';
+import 'package:swagatham/widgets/primary_btn.dart';
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      bottomNavigationBar: BottomAppBar(
+        
+        color: Colors.white,
+        child: Container(),
+      ),
+      body: Container(
+        decoration: BoxDecoration(color: Color(0xffa4123f)),
+        child: Column(
+          children: [
+            SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.sp),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(LucideIcons.alignLeft, color: Colors.white),
+                    
+                    Image.asset('assets/images/amrita_logo.png', width: 100),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 20.h),
+            Expanded(
+              child: Container(
+                width: Get.width,
+                padding: EdgeInsets.symmetric(horizontal: 16.sp),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(32.sp),
+                    topRight: Radius.circular(32.sp),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(height: 50.h),
+                    Image.asset('assets/images/home_img.png', width: 250),
+                    SizedBox(height: 20.h),
+                    Text(
+                      'Welcome – Student QR Scanner',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 5.h),
+                    Text(
+                      'Scan student QR codes to instantly view their \nname, photo, roll number, and key details. A \nfast, simple, and efficient way to access \nstudent info on the go. ',
+                      style: TextStyle(
+                        fontSize: 10.67.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey.shade600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                        InkWell(
+                          onTap: ()=>{
+                            Get.toNamed(AppRoutes.qrPage)
+                          },
+                          child: PrimaryBtn())
+                      ],),
+                    )
+                    
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+

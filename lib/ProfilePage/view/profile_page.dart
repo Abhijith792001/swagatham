@@ -3,79 +3,211 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:swagatham/routes/app_routes.dart';
+import 'package:swagatham/widgets/primary_btn.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: InkWell(
-          onTap: () => {Get.offAllNamed(AppRoutes.homePage)},
-          child: Icon(LucideIcons.chevronLeft, color: Colors.white),
-        ),
+        toolbarHeight: 70,
         backgroundColor: Color(0xffa4123f),
-        title: Text('Profile Page', style: TextStyle(color: Colors.white)),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(LucideIcons.chevronLeft, color: Colors.white),
+          onPressed: () => Get.offAllNamed(AppRoutes.homePage),
+        ),
+        title: Text(
+          'Student Profile',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        centerTitle: true,
       ),
-      body: Stack(
-        alignment: AlignmentDirectional.topCenter,
+      body: Column(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: 100.h,
-                decoration: BoxDecoration(color: Color(0xffa4123f)),
+          SizedBox(height: 10.h),
+          Center(
+            child: CircleAvatar(
+              radius: 45.r,
+              backgroundColor: Colors.grey.shade300,
+              backgroundImage: const NetworkImage(
+                'https://abhijithjeejamon.netlify.app/assets/img/abhi.jpg',
               ),
-              SizedBox(height: 45.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+            ),
+          ),
+          SizedBox(height: 10.h),
+          Text(
+            'Abhijith J',
+            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
+          ),
+          Text(
+            '24508545HFKHF',
+            style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+          ),
+          SizedBox(height: 20.h),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    children: [
-                      Text(
-                        'Abhijith J',
-                        style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        '24508545HFKHF',
-                        style: TextStyle(
-                          fontSize: 13.33.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
-                    ],
+                  SectionTitle(title: 'Personal Details'),
+                  MiniInfoTile(
+                    icon: LucideIcons.user,
+                    title: 'Name',
+                    value: 'Abhijith J',
                   ),
+                  MiniInfoTile(
+                    icon: LucideIcons.calendar,
+                    title: 'DOB',
+                    value: '12/12/2025',
+                  ),
+                  MiniInfoTile(
+                    icon: LucideIcons.phone,
+                    title: 'Contact',
+                    value: '+91 9656529707',
+                  ),
+                  MiniInfoTile(
+                    icon: LucideIcons.mail,
+                    title: 'Email',
+                    value: 'abhijithjr@am.amrita.edu',
+                  ),
+                  SizedBox(height: 16.h),
+                  SectionTitle(title: 'Academic Details'),
+                  MiniInfoTile(
+                    icon: LucideIcons.graduationCap,
+                    title: 'College',
+                    value: 'Amrita Vishwa Vidyapeetham',
+                  ),
+                  MiniInfoTile(
+                    icon: LucideIcons.bookOpen,
+                    title: 'Course',
+                    value: 'BCA (2023 – 2026)',
+                  ),
+                  MiniInfoTile(
+                    icon: LucideIcons.building2,
+                    title: 'Department',
+                    value: 'Computer Applications',
+                  ),
+                  MiniInfoTile(
+                    icon: LucideIcons.calendarClock,
+                    title: 'Current Year',
+                    value: '2nd Year',
+                  ),
+                  SizedBox(height: 20.h,),
+                  
+                  Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    GestureDetector(
+      onTap: () {}, // You can add your function here
+      child: Container(
+        width: 0.7.sw,
+        padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 20.w),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xffd4145a), Color(0xffa4123f)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 8,
+              offset: Offset(0, 4),
+            ),
+          ],
+          borderRadius: BorderRadius.circular(18.r),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(LucideIcons.circleCheck, size: 20.sp, color: Colors.white),
+            SizedBox(width: 8.w),
+            Text(
+              'Mark Us In',
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                letterSpacing: 0.5,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  ],
+),
+
                 ],
               ),
-              SizedBox(height: 20.h,),
-              Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 16.sp),
-                child: Text(
-                  'Personal Details',
-                  style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600),
-                ),
-              ),
-            ],
+            ),
           ),
-          Positioned(
-            top: 30.h,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.white, width: 4),
-                shape: BoxShape.circle,
-              ),
-              child: CircleAvatar(
-                radius: 70,
-                backgroundImage: NetworkImage(
-                  'https://abhijithjeejamon.netlify.app/assets/img/abhi.jpg',
-                ),
-              ),
+        ],
+      ),
+    );
+  }
+}
+
+class SectionTitle extends StatelessWidget {
+  final String title;
+  const SectionTitle({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 8.h, top: 10.h),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.bold,
+          color: Colors.black87,
+        ),
+      ),
+    );
+  }
+}
+
+class MiniInfoTile extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String value;
+
+  const MiniInfoTile({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 6.h),
+      child: Row(
+        children: [
+          Icon(icon, size: 16.sp, color: Colors.black54),
+          SizedBox(width: 10.w),
+          Text(
+            "$title: ",
+            style: TextStyle(fontSize: 13.sp, color: Colors.black87),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: TextStyle(fontSize: 13.sp, color: Colors.grey[700]),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
           ),
         ],

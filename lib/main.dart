@@ -10,7 +10,6 @@ main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -19,9 +18,8 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (_, child) {
         return GetMaterialApp(
-
           debugShowCheckedModeBanner: false,
-          initialRoute: AppRoutes.homePage,
+          initialRoute: AppRoutes.splashPage,
           getPages: AppPage.pages,
           theme: ThemeData(
             fontFamily: 'Poppins',

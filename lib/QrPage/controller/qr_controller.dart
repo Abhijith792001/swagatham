@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
+import 'package:swagatham/routes/app_routes.dart';
 
 class QrController extends GetxController {
   QRViewController? qrController;
@@ -10,7 +11,7 @@ class QrController extends GetxController {
 
   RxBool isSelected = false.obs;
   RxBool isScanning = true.obs;
-  
+
   // Add debouncing to prevent multiple scans
   DateTime? lastScanTime;
   static const scanCooldown = Duration(milliseconds: 500);
@@ -22,10 +23,10 @@ class QrController extends GetxController {
 
   void onQRViewCreated(QRViewController controller) {
     qrController = controller;
-    
+
     // Configure scanner for better performance
     _configureScanner();
-    
+
     qrController!.scannedDataStream.listen((scanData) {
       _handleScanData(scanData);
     });
@@ -34,38 +35,48 @@ class QrController extends GetxController {
   void _configureScanner() {
     // Set scan area to reduce processing (optional)
     // qrController?.updateScanArea(Rect.fromLTWH(50, 50, 200, 200));
-    
+
     // You can also set format filters to scan only QR codes
     // qrController?.updateScanArea(formats: [BarcodeFormat.qrcode]);
   }
 
   void _handleScanData(Barcode? scanData) {
     if (scanData == null || scanData.code == null) return;
-    
+
     // Implement debouncing to prevent rapid consecutive scans
     final now = DateTime.now();
-    if (lastScanTime != null && 
-        now.difference(lastScanTime!) < scanCooldown) {
+    if (lastScanTime != null && now.difference(lastScanTime!) < scanCooldown) {
       return;
     }
-    
+
     lastScanTime = now;
     result.value = scanData;
-    
+
     // Pause scanning temporarily to prevent continuous scanning
     pauseCamera();
     isScanning.value = false;
-    
+
     // Show result
     Get.snackbar(
-      'QR Code Scanned', 
+      'QR Code Scanned',
       scanData.code.toString(),
       duration: const Duration(seconds: 2),
       snackPosition: SnackPosition.TOP,
     );
-    
+
+    if (scanData.code != null) {
+      Get.offAllNamed(
+        arguments: {
+          'scanData': scanData.code
+        },
+        AppRoutes.profilePage);
+    } else {
+      Get.offAllNamed(AppRoutes.homePage);
+      Get.snackbar('Error', 'Try Again');
+    }
+
     log("QR Code: ${scanData.code}");
-    
+
     // Auto-resume scanning after 2 seconds (optional)
     Future.delayed(const Duration(seconds: 2), () {
       if (!isScanning.value) {
@@ -84,9 +95,9 @@ class QrController extends GetxController {
   void onPermissionSet(BuildContext context, bool permission) {
     log('Permission granted: $permission');
     if (!permission) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Camera permission denied'))
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Camera permission denied')));
     }
   }
 

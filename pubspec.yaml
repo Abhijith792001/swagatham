@@ -39,6 +39,7 @@ dependencies:
   flutter_screenutil: ^5.9.3
   lucide_icons_flutter: ^3.0.6
   qr_code_scanner_plus: ^2.0.10+1
+  flutter_svg: ^2.2.0
 
 dev_dependencies:
   flutter_test:

@@ -12,9 +12,12 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomAppBar(
-        
         color: Colors.white,
-        child: Container(),
+        // child: Chip(
+        //   backgroundColor: Colors.grey.shade100,
+        //   avatar: Icon(Icons.help_outline, size: 18),
+        //   label: Text('May I Help You?'),
+        // ),
       ),
       body: Container(
         decoration: BoxDecoration(color: Color(0xffa4123f)),
@@ -27,8 +30,8 @@ class HomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Icon(LucideIcons.alignLeft, color: Colors.white),
-                    
-                    Image.asset('assets/images/amrita_logo.png', width: 100),
+
+                    Image.asset('assets/images/amrita_logo_white.png', width: 100),
                   ],
                 ),
               ),
@@ -51,35 +54,41 @@ class HomePage extends StatelessWidget {
                     Image.asset('assets/images/home_img.png', width: 250),
                     SizedBox(height: 20.h),
                     Text(
-                      'Welcome – Student QR Scanner',
+                      'Welcome – Swagatham 2025',
                       style: TextStyle(
-                        fontSize: 16.sp,
+                        fontSize: 16.87.sp,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    SizedBox(height: 5.h),
+                    SizedBox(height: 6.h),
                     Text(
                       'Scan student QR codes to instantly view their \nname, photo, roll number, and key details. A \nfast, simple, and efficient way to access \nstudent info on the go. ',
                       style: TextStyle(
-                        fontSize: 10.67.sp,
+                        fontSize: 11.sp,
                         fontWeight: FontWeight.w600,
                         color: Colors.grey.shade600,
                       ),
                       textAlign: TextAlign.center,
                     ),
+
                     Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                        InkWell(
-                          onTap: ()=>{
-                            Get.toNamed(AppRoutes.qrPage)
-                          },
-                          child: PrimaryBtn())
-                      ],),
-                    )
-                    
+                          InkWell(
+                            onTap: () => {Get.toNamed(AppRoutes.qrPage)},
+                            child: PrimaryBtn(),
+                          ),
+                          SizedBox(height: 15.h),
+                          Chip(
+                            backgroundColor: Colors.grey.shade100,
+                            avatar: Icon(Icons.help_outline, size: 18),
+                            label: Text('Read instruction'),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -90,4 +99,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-

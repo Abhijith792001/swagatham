@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:swagatham/Pages/HomePage/controller/home_controller.dart';
 import 'package:swagatham/routes/app_routes.dart';
 import 'package:swagatham/widgets/primary_btn.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
 
   @override
@@ -29,9 +31,25 @@ class HomePage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(LucideIcons.alignLeft, color: Colors.white),
+                    // Icon(LucideIcons.alignLeft, color: Colors.white),
+                    Image.asset(
+                      'assets/images/amrita_logo_white.png',
+                      width: 100,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        controller.logOut();
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(10),
 
-                    Image.asset('assets/images/amrita_logo_white.png', width: 100),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          color: Colors.white10,
+                        ),
+                        child: Icon(LucideIcons.logOut, color: Colors.white),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -78,13 +96,22 @@ class HomePage extends StatelessWidget {
                         children: [
                           InkWell(
                             onTap: () => {Get.toNamed(AppRoutes.qrPage)},
-                            child: PrimaryBtn(),
+                            child: Obx(
+                              () => PrimaryBtn(
+                                btnText: controller.buttonText.value,
+                              ),
+                            ),
                           ),
                           SizedBox(height: 15.h),
-                          Chip(
-                            backgroundColor: Colors.grey.shade100,
-                            avatar: Icon(Icons.help_outline, size: 18),
-                            label: Text('Read instruction'),
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed(AppRoutes.instructionPage);
+                            },
+                            child: Chip(
+                              backgroundColor: Colors.grey.shade100,
+                              avatar: Icon(Icons.help_outline, size: 18),
+                              label: Text('Read instruction'),
+                            ),
                           ),
                         ],
                       ),

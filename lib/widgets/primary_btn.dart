@@ -5,7 +5,8 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:swagatham/theme/app_theme.dart';
 
 class PrimaryBtn extends StatelessWidget {
-  const PrimaryBtn({super.key});
+   PrimaryBtn({super.key, required this.btnText});
+  final String btnText ;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +22,7 @@ class PrimaryBtn extends StatelessWidget {
           Icon(LucideIcons.qrCode, color: Colors.white),
           SizedBox(width: 10.w),
           Text(
-            'Gate Pass Scan',
+            btnText,
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,

@@ -72,28 +72,30 @@ class LoginPage extends GetView<AuthController> {
               ),
             ),
             SizedBox(height: 20.h),
-            InkWell(
-              onTap:
-                  () => {
-                    controller.login(
-                      _emailController.text.trim(),
-                      _passwordController.text.trim(),
+            Obx(
+              ()=> InkWell(
+                onTap:
+                    () => {
+                      controller.login(
+                        _emailController.text.trim(),
+                        _passwordController.text.trim(),
+                      ),
+                    },
+                child: Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
+                  margin: EdgeInsets.symmetric(horizontal: 15.w),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(32)),
+                    gradient: AppTheme.primaryGradient,
+                  ),
+                  child: controller.isLoading.value ? CircularProgressIndicator(color: Colors.white,) : Text(
+                    'Login',
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
                     ),
-                  },
-              child: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
-                margin: EdgeInsets.symmetric(horizontal: 15.w),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(32)),
-                  gradient: AppTheme.primaryGradient,
-                ),
-                child: controller.isLoading.value ? CircularProgressIndicator() : Text(
-                  'Login',
-                  style: TextStyle(
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
                   ),
                 ),
               ),

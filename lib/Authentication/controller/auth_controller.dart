@@ -1,38 +1,77 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as appDio;
+import 'package:swagatham/Authentication/model/login_model.dart';
 import 'package:swagatham/routes/app_routes.dart';
 import 'package:swagatham/service/api_service.dart';
 import 'package:swagatham/utils/storage_manger.dart';
 
-class AuthController {
-  ApiService apiService = ApiService();
-  StorageManger appStorage = StorageManger();
+class AuthController extends GetxController {
+  final ApiService apiService = ApiService();
+  final StorageManger appStorage = StorageManger();
 
-  RxString currentUser = ''.obs;
-  RxBool isLoading = false.obs;
+  final RxString currentUser = ''.obs;
+  final RxBool isLoading = false.obs;
+  final RxString isLoggedIn = ''.obs;
 
-
-  login(String email, String password) async {
+  Future<void> login(String email, String password) async {
     final payLoad = {'login_name': email, 'password': password};
+
     try {
       isLoading.value = true;
-      appDio.Response response = await apiService.postApi('login', payLoad);
-      if (response.statusCode == 200) {
-        appStorage.write('isLoggedIn', true);
+
+      final appDio.Response? response = await apiService.postApi('login', payLoad);
+
+      if (response != null && response.statusCode == 200) {
+        final userData = response.data;
+
+        final loginData = LoginResponseModel.fromJson(userData);
+
+        await appStorage.write('role', loginData.role.role);
+
+        
+        // Optional: Save user data if needed
+         await appStorage.write('isLoggedIn', 'true');
+
+        await appStorage.write('userData', jsonEncode(userData));
+
+        // await appStorage.write('role', value)
+
+        // isLoggedIn.value =  await appStorage.read('isLoggedIn');
+
         Get.offAllNamed(AppRoutes.homePage);
-        print("---------------> login done ${response}");
+
         Get.snackbar(
           'Success',
-          'Login Succesfully',
+          'Login Successful',
           snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green[600],
+          backgroundColor: Colors.green.shade600,
+          colorText: Colors.white,
         );
+
+        print("✅ Login successful: $userData");
+
       } else {
-        print('Check your mail and password');
+        Get.snackbar(
+          'Login Failed',
+          'Invalid email or password.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.shade600,
+          colorText: Colors.white,
+        );
+        print("❌ Invalid credentials or server error.");
       }
     } catch (e) {
-      Get.snackbar('Error', 'Api is error ${e.toString()}');
+      Get.snackbar(
+        'Error',
+        'Something went wrong. Please try again.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red.shade600,
+        colorText: Colors.white,
+      );
+      print("❌ API exception: $e");
     } finally {
       isLoading.value = false;
     }

@@ -1,8 +1,13 @@
 import 'package:get/get.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:swagatham/routes/app_routes.dart';
+import 'package:swagatham/utils/storage_manger.dart';
 
 class SplashController extends GetxController {
+  StorageManger appStorage = StorageManger();
+
+  String? isLoggedIn = '';
+
   @override
   void onInit() {
     super.onInit();
@@ -21,15 +26,15 @@ class SplashController extends GetxController {
       await Future.delayed(const Duration(seconds: 2));
 
       // Navigate to Home Page
-      Get.offAllNamed(AppRoutes.loginPage);
+      isLoggedIn = await appStorage.read('isLoggedIn');
+     
+      if (isLoggedIn == "true") {
+        Get.offAllNamed(AppRoutes.homePage);
+      } else {
+        Get.offAllNamed(AppRoutes.loginPage);
+      }
     } catch (e) {
       print('Error during initialization: $e');
-      try {
-        FlutterNativeSplash.remove();
-      } catch (splashError) {
-        print('Could not remove native splash: $splashError');
-      }
-      Get.offAllNamed(AppRoutes.homePage);
     }
   }
 }

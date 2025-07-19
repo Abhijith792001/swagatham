@@ -4,5 +4,6 @@ class  AppRoutes {
   static String profilePage = '/profilePage';
   static String loginPage = '/loginPage';
   static String splashPage = '/splashPage';
+  static String instructionPage = '/instructionPage';
   
 }

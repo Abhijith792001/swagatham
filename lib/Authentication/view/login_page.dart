@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:swagatham/routes/app_routes.dart';
+import 'package:swagatham/Authentication/controller/auth_controller.dart';
 import 'package:swagatham/theme/app_theme.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class LoginPage extends GetView<AuthController> {
+  LoginPage({super.key});
 
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,8 +48,9 @@ class LoginPage extends StatelessWidget {
                 border: Border.all(color: Colors.black45),
               ),
               child: TextField(
+                controller: _emailController,
                 decoration: InputDecoration(
-                  hintText: 'Username',
+                  hintText: 'Enter a valid email address',
                   border: InputBorder.none,
                 ),
               ),
@@ -60,27 +63,32 @@ class LoginPage extends StatelessWidget {
                 border: Border.all(color: Colors.black45),
               ),
               child: TextField(
+                controller: _passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
-                  hintText: 'Password',
+                  hintText: 'Enter your password',
                   border: InputBorder.none,
                 ),
               ),
             ),
             SizedBox(height: 20.h),
             InkWell(
-              onTap: () => {
-                Get.offAllNamed(AppRoutes.homePage)
-              },
+              onTap:
+                  () => {
+                    controller.login(
+                      _emailController.text.trim(),
+                      _passwordController.text.trim(),
+                    ),
+                  },
               child: Container(
                 alignment: Alignment.center,
                 padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
                 margin: EdgeInsets.symmetric(horizontal: 15.w),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(32)),
-                  gradient: AppTheme.primaryGradient
+                  gradient: AppTheme.primaryGradient,
                 ),
-                child: Text(
+                child: controller.isLoading.value ? CircularProgressIndicator() : Text(
                   'Login',
                   style: TextStyle(
                     fontSize: 15.sp,

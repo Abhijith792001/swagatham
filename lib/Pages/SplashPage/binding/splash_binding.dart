@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:swagatham/SplashPage/controller/splash_controller.dart';
+import 'package:swagatham/Pages/SplashPage/controller/splash_controller.dart';
 
 class SplashBinding extends Bindings {
   @override

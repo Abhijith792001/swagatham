@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:swagatham/SplashPage/controller/splash_controller.dart';
+import 'package:swagatham/Pages/SplashPage/controller/splash_controller.dart';
 
 class SplashPage extends GetView<SplashController> {
   const SplashPage({super.key});

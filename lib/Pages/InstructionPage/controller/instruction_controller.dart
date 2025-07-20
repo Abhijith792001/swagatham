@@ -21,11 +21,11 @@ class InstructionController extends GetxController {
       errorMessage.value = '';
       
       final payload = {
-        "login_name": "shyamdassd@am.amrita.edu",
-        "password": "test@123",
+        // "login_name": "shyamdassd@am.amrita.edu",
+        // "password": "test@123",
       };
 
-      final response = await apiService.postApi('instruction', payload);
+      final response = await apiService.postApi('instruction',  {});
 
       if (response.statusCode == 200) {
         final responseData = response.data;

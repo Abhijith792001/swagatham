@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:swagatham/service/common_interceptors.dart';
 
@@ -7,8 +6,8 @@ class ApiService {
   static const String baseUrl = 'https://mobile-api.amrita.ac.in/swagatham/';
   final Map<String, String> headers = {
     "X-API-KEY": '5c8522e3b4674e8ea767c5dbabb127a6',
-    "Content-Type": "application/json",
-    "Accept": "application/json",
+    // "Content-Type": "application/json",
+    // "Accept": "application/json",
   };
 
   late final Dio dio;

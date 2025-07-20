@@ -16,7 +16,7 @@ class InstructionPage extends GetView<InstructionController> {
           onTap: () {
             Get.offNamed(AppRoutes.homePage);
           },
-          child: Icon(LucideIcons.chevronLeft),
+          child: Icon(LucideIcons.x),
         ),
         title: const Text('Instructions'),
         centerTitle: true,

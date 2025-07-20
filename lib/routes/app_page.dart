@@ -5,7 +5,7 @@ import 'package:swagatham/Pages/HomePage/binding/home_binding.dart';
 import 'package:swagatham/Pages/HomePage/view/home_page.dart';
 import 'package:swagatham/Pages/InstructionPage/binding/instruction_binding.dart';
 import 'package:swagatham/Pages/InstructionPage/view/instruction_page.dart';
-import 'package:swagatham/Pages/ProfilePage/view/profile_page.dart';
+import 'package:swagatham/Pages/QrPage/view/profile_page.dart';
 import 'package:swagatham/Pages/QrPage/view/qr_page.dart';
 import 'package:swagatham/Pages/SplashPage/binding/splash_binding.dart';
 import 'package:swagatham/Pages/SplashPage/view/splash_page.dart';

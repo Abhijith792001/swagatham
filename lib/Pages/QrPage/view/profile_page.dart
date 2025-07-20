@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:swagatham/Pages/QrPage/controller/qr_controller.dart';
 import 'package:swagatham/routes/app_routes.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
-
+   ProfilePage({super.key});
+  final controller = Get.put(QrController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,61 +59,60 @@ class ProfilePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Replace old tiles inside Column(children: [...]) in body with this updated section
-
-SectionTitle(title: 'Profile Details'),
-MiniInfoTile(
-  icon: LucideIcons.user,
-  title: 'Name',
-  value: 'Abhijith J',
-),
-MiniInfoTile(
-  icon: LucideIcons.bookOpen,
-  title: 'Course',
-  value: 'BCA (2023 – 2026)',
-),
-MiniInfoTile(
-  icon: LucideIcons.badgeIndianRupee,
-  title: 'CAN Number',
-  value: '24508545HFKHF',
-),
-MiniInfoTile(
-  icon: LucideIcons.userCheck,
-  title: 'Hosteller/Day Scholar',
-  value: 'Hosteller',
-),
-MiniStatusTile(
-  icon: LucideIcons.calendarCheck2,
-  title: 'Hostel Arrival Date',
-  date: '15/07/2025',
-  status: 'IN', // or 'OUT'
-),
-MiniInfoTile(
-  icon: LucideIcons.bedDouble,
-  title: 'Hostel Room Number',
-  value: 'G12',
-),
-MiniInfoTile(
-  icon: LucideIcons.building2,
-  title: 'Building Name',
-  value: 'B-Block',
-),
-MiniStatusTile(
-  icon: LucideIcons.calendarDays,
-  title: 'Campus Arrival Date',
-  date: '15/07/2025',
-  status: 'IN',
-),
-MiniStatusTile(
-  icon: LucideIcons.fileCheck2,
-  title: 'Document',
-  date: '15/07/2025',
-  status: 'OUT',
-),
-MiniInfoTile(
-  icon: LucideIcons.mapPin,
-  title: 'Location',
-  value: 'Amrita Campus',
-),
+                  SectionTitle(title: 'Profile Details'),
+                  MiniInfoTile(
+                    icon: LucideIcons.user,
+                    title: 'Name',
+                    value: 'Abhijith J',
+                  ),
+                  MiniInfoTile(
+                    icon: LucideIcons.bookOpen,
+                    title: 'Course',
+                    value: 'BCA (2023 – 2026)',
+                  ),
+                  MiniInfoTile(
+                    icon: LucideIcons.badgeIndianRupee,
+                    title: 'CAN Number',
+                    value: '24508545HFKHF',
+                  ),
+                  MiniInfoTile(
+                    icon: LucideIcons.userCheck,
+                    title: 'Hosteller/Day Scholar',
+                    value: 'Hosteller',
+                  ),
+                  MiniStatusTile(
+                    icon: LucideIcons.calendarCheck2,
+                    title: 'Hostel Arrival Date',
+                    date: '15/07/2025',
+                    status: 'IN', // or 'OUT'
+                  ),
+                  MiniInfoTile(
+                    icon: LucideIcons.bedDouble,
+                    title: 'Hostel Room Number',
+                    value: 'G12',
+                  ),
+                  MiniInfoTile(
+                    icon: LucideIcons.building2,
+                    title: 'Building Name',
+                    value: 'B-Block',
+                  ),
+                  MiniStatusTile(
+                    icon: LucideIcons.calendarDays,
+                    title: 'Campus Arrival Date',
+                    date: '15/07/2025',
+                    status: 'IN',
+                  ),
+                  MiniStatusTile(
+                    icon: LucideIcons.fileCheck2,
+                    title: 'Document',
+                    date: '15/07/2025',
+                    status: 'OUT',
+                  ),
+                  MiniInfoTile(
+                    icon: LucideIcons.mapPin,
+                    title: 'Location',
+                    value: 'Amrita Campus',
+                  ),
 
                   SizedBox(height: 20.h),
 
@@ -120,7 +120,9 @@ MiniInfoTile(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        onTap: () {}, // You can add your function here
+                        onTap: () {
+                          controller.fetchStudentData('1001003334');
+                        }, // You can add your function here
                         child: Container(
                           width: 0.7.sw,
                           padding: EdgeInsets.symmetric(
@@ -250,7 +252,8 @@ class MiniStatusTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color statusColor = status.toUpperCase() == 'IN' ? Colors.green : Colors.red;
+    Color statusColor =
+        status.toUpperCase() == 'IN' ? Colors.green : Colors.red;
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 6.h),
       child: Row(

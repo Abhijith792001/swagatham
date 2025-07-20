@@ -11,6 +11,7 @@ class QrController extends GetxController {
 
   RxBool isSelected = false.obs;
   RxBool isScanning = true.obs;
+  RxString scannedValue = ''.obs;
 
   // Add debouncing to prevent multiple scans
   DateTime? lastScanTime;
@@ -70,6 +71,7 @@ class QrController extends GetxController {
           'scanData': scanData.code
         },
         AppRoutes.profilePage);
+
     } else {
       Get.offAllNamed(AppRoutes.homePage);
       Get.snackbar('Error', 'Try Again');

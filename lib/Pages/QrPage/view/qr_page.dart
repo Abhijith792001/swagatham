@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
-import '../controller/qr_controller.dart';
+import 'package:swagatham/Pages/QrPage/controller/qr_controller.dart';
 
 class QrPage extends StatelessWidget {
   QrPage({super.key});

@@ -5,6 +5,7 @@ import 'package:swagatham/Pages/HomePage/binding/home_binding.dart';
 import 'package:swagatham/Pages/HomePage/view/home_page.dart';
 import 'package:swagatham/Pages/InstructionPage/binding/instruction_binding.dart';
 import 'package:swagatham/Pages/InstructionPage/view/instruction_page.dart';
+import 'package:swagatham/Pages/QrPage/binding/qr_binding.dart';
 import 'package:swagatham/Pages/QrPage/view/profile_page.dart';
 import 'package:swagatham/Pages/QrPage/view/qr_page.dart';
 import 'package:swagatham/Pages/SplashPage/binding/splash_binding.dart';
@@ -35,6 +36,11 @@ class AppPage {
       name: AppRoutes.instructionPage,
       page: () => InstructionPage(),
       binding: InstructionBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.profilePage,
+      page: () => ProfilePage(),
+      binding: QrBinding(),
     ),
   ];
 }

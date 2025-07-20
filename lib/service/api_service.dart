@@ -57,3 +57,40 @@ class ApiService {
     }
   }
 }
+
+// // import 'package:dio/dio.dart';
+// // import 'package:get/get.dart' as get_pack;
+// // import 'package:get/utils.dart';
+// // import 'package:swagatham/service/common_interceptors.dart';
+
+// // class ApiService {
+// //   var headers = {
+
+// //     "X-API-KEY": '5c8522e3b4674e8ea767c5dbabb127a6',
+// //   };
+
+// //   late Dio dio;
+// //   ApiService() {
+// //     dio = Dio();
+// //     dio.interceptors.add(CustomInterceptors(headers: headers));
+// //   }
+
+
+
+// //   postApi(String value, Map<String, dynamic> data) async {
+// //     try {
+// //       Response response = await dio.post(
+// //         'https://mobile-api.amrita.ac.in/swagatham/$value',
+// //         data: data,
+        
+// //       );
+// //       print(response);
+// //      return response;
+// //     } catch (e) {
+// //       Get.snackbar('Error', "Api response is not working ${e.toString()}");
+// //     }
+// //   }
+// // }
+
+
+

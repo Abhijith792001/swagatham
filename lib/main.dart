@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       builder: (_, child) {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: AppRoutes.instructionPage,
+          initialRoute: AppRoutes.splashPage,
           getPages: AppPage.pages,
           theme: ThemeData(
             fontFamily: 'Poppins',

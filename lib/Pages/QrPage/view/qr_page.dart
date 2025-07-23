@@ -4,23 +4,29 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
-import 'package:swagatham/Pages/QrPage/controller/qr_controller.dart';
+import '../controller/qr_controller.dart';
 
-class QrPage extends StatelessWidget {
-  QrPage({super.key});
+class QrPage extends StatefulWidget {
+  const QrPage({super.key});
 
+  @override
+  State<QrPage> createState() => _QRScannerPageState();
+}
+
+class _QRScannerPageState extends State<QrPage> {
   final QrController controller = Get.put(QrController());
 
   @override
-  Widget build(BuildContext context) {
-    // Handle reassemble manually
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (Platform.isAndroid) {
-        controller.pauseCamera();
-      }
-      controller.resumeCamera();
-    });
+  void reassemble() {
+    super.reassemble();
+    if (Platform.isAndroid) {
+      controller.qrController?.pauseCamera();
+    }
+    controller.qrController?.resumeCamera();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -28,35 +34,35 @@ class QrPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         centerTitle: true,
         leading: InkWell(
-          onTap: () => Get.back(),
+          onTap: () => {Get.back()},
           child: const Icon(LucideIcons.x, color: Colors.white),
         ),
         actions: [
-          Obx(() => InkWell(
-                onTap: controller.toggleFlash,
-                child: Icon(
-                  controller.isSelected.value
-                      ? LucideIcons.flashlightOff
-                      : LucideIcons.flashlight,
-                  color: Colors.white,
-                ),
-              )),
+          Obx(
+            () => InkWell(
+              onTap: () => controller.toggleFlash(),
+              child: Icon(
+                controller.isSelected.value
+                    ? LucideIcons.flashlightOff
+                    : LucideIcons.flashlight,
+                color: Colors.white,
+              ),
+            ),
+          ),
           SizedBox(width: 15.w),
           const Icon(LucideIcons.ellipsisVertical, color: Colors.white),
         ],
       ),
+
       body: Stack(
         children: [
-          Column(
-            children: [
-              Expanded(flex: 4, child: _buildQrView(context)),
-            ],
-          ),
+          Column(children: [Expanded(flex: 4, child: _buildQrView(context))]),
           Positioned(
             bottom: 0,
             left: 0,
             right: 0,
             child: Container(
+              // padding: EdgeInsets.all(12.sp),
               height: 70.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -81,6 +87,7 @@ class QrPage extends StatelessWidget {
                     'Quickly and get your student.',
                     style: TextStyle(fontSize: 10.sp, color: Colors.white),
                   ),
+                  Divider(thickness: 0.5),
                 ],
               ),
             ),
@@ -92,7 +99,8 @@ class QrPage extends StatelessWidget {
 
   Widget _buildQrView(BuildContext context) {
     final scanArea =
-        (MediaQuery.of(context).size.width < 400 || MediaQuery.of(context).size.height < 400)
+        (MediaQuery.of(context).size.width < 400 ||
+                MediaQuery.of(context).size.height < 400)
             ? 150.0
             : 300.0;
 
@@ -101,7 +109,7 @@ class QrPage extends StatelessWidget {
       onQRViewCreated: controller.onQRViewCreated,
       onPermissionSet: (ctrl, p) => controller.onPermissionSet(context, p),
       overlay: QrScannerOverlayShape(
-        borderColor: const Color(0xffa4123f),
+        borderColor: Color(0xffa4123f),
         borderRadius: 10,
         borderLength: 30,
         borderWidth: 15,

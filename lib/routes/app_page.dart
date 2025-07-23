@@ -20,7 +20,6 @@ class AppPage {
       binding: HomeBinding(),
     ),
     GetPage(name: AppRoutes.qrPage, page: () => QrPage()),
-    GetPage(name: AppRoutes.profilePage, page: () => ProfilePage()),
     GetPage(
       name: AppRoutes.loginPage,
       page: () => LoginPage(),

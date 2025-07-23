@@ -1,12 +1,12 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart' as appDio;
 import 'package:get/get.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 import 'package:swagatham/Pages/QrPage/model/student_model.dart';
 import 'package:swagatham/routes/app_routes.dart';
 import 'package:swagatham/service/api_service.dart';
 import 'package:swagatham/utils/storage_manger.dart';
+import 'package:dio/dio.dart' as appDio;
 
 class QrController extends GetxController {
   QRViewController? qrController;
@@ -15,13 +15,17 @@ class QrController extends GetxController {
 
   Rx<ProfileInfo?> studentProfile = Rx<ProfileInfo?>(null);
 
-  ApiService apiService = ApiService();
   StorageManger appStorage = StorageManger();
+  ApiService apiService = ApiService();
 
   RxBool isSelected = false.obs;
   RxBool isScanning = true.obs;
   RxBool isLoading = false.obs;
-  RxString scannedValue = ''.obs;
+  RxBool success = false.obs;
+
+  RxString scanedValue = ''.obs;
+  RxString successMessage = ''.obs;
+  RxString userRole = ''.obs;
 
   // Add debouncing to prevent multiple scans
   DateTime? lastScanTime;
@@ -30,7 +34,6 @@ class QrController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchStudentData('');
   }
 
   void onQRViewCreated(QRViewController controller) {
@@ -55,40 +58,42 @@ class QrController extends GetxController {
   void _handleScanData(Barcode? scanData) async {
     if (scanData == null || scanData.code == null) return;
 
+    // Implement debouncing
     final now = DateTime.now();
     if (lastScanTime != null && now.difference(lastScanTime!) < scanCooldown) {
       return;
     }
+
     lastScanTime = now;
     result.value = scanData;
 
+    // Pause scanning temporarily
     pauseCamera();
     isScanning.value = false;
 
-    scannedValue.value = scanData.code!;
-    log("Scanned QR Code: ${scannedValue.value}");
+    scanedValue.value = scanData.code.toString();
 
-    // Show snackbar
-    Get.snackbar(
-      'QR Code Scanned',
-      scannedValue.value,
-      duration: const Duration(seconds: 2),
-      snackPosition: SnackPosition.TOP,
-    );
+    // Wait for API call to complete
+    await fetchStudentData(scanedValue.value);
 
-    // ✅ Fetch student data using scanned value
-    await fetchStudentData(scannedValue.value);
-
-    // ✅ After fetching, navigate to profile screen
     if (studentProfile.value != null) {
-      Get.offAllNamed(
-        AppRoutes.profilePage,
-        arguments: {'profile': studentProfile.value},
-      );
+      // Only navigate if we have valid profile data
+      Get.offNamed(AppRoutes.profilePage);
     } else {
-      Get.snackbar("Error", "Student not found");
-      resumeScanning();
+      // Resume scanning if API failed or no data
+      Get.snackbar(
+        'Error',
+        'Failed to fetch student data. Please try again.',
+        duration: const Duration(seconds: 2),
+      );
+
+      // Auto-resume scanning after showing error
+      Future.delayed(const Duration(seconds: 2), () {
+        resumeScanning();
+      });
     }
+
+    log("QR Code: ${scanData.code}");
   }
 
   void resumeScanning() {
@@ -107,7 +112,7 @@ class QrController extends GetxController {
     }
   }
 
-  Future<void> toggleFlash() async {
+  Future toggleFlash() async {
     try {
       await qrController?.toggleFlash();
       isSelected.value = !isSelected.value;
@@ -117,7 +122,7 @@ class QrController extends GetxController {
     }
   }
 
-  Future<void> flipCamera() async {
+  Future flipCamera() async {
     try {
       await qrController?.flipCamera();
       update();
@@ -144,7 +149,7 @@ class QrController extends GetxController {
     }
   }
 
-  Future<void> pauseCamera() async {
+  Future pauseCamera() async {
     try {
       await qrController?.pauseCamera();
     } catch (e) {
@@ -152,7 +157,7 @@ class QrController extends GetxController {
     }
   }
 
-  Future<void> resumeCamera() async {
+  Future resumeCamera() async {
     try {
       await qrController?.resumeCamera();
     } catch (e) {
@@ -166,18 +171,18 @@ class QrController extends GetxController {
     super.onClose();
   }
 
+  // Api Side
+
   Future<void> fetchStudentData(String applicationNo) async {
     print("--------------->applicationNo $applicationNo");
 
-    final payLoad = {"application_no": applicationNo.toString()};
-
-    print(payLoad);
-    final response = await apiService.postApi('profile', payLoad);
-
-    print("-----------------------------> ${response}");
-
     try {
       isLoading.value = true;
+      final payLoad = {"application_no": "1001003334"};
+      final appDio.Response response = await apiService.postApi(
+        'profile',
+        payLoad,
+      );
 
       print(response);
       if (response.statusCode == 200) {
@@ -199,6 +204,30 @@ class QrController extends GetxController {
       Get.snackbar('Error', 'Check your API: ${e.toString()}');
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> markUs(String applicationNo) async {
+    isLoading.value = false;
+    final _role = await appStorage.read('role');
+    switch (_role) {
+      case 'Gate':
+        userRole.value = "1";
+      case 'Teacher':
+        userRole.value = "2";
+      case 'Warden':
+        userRole.value = "3";
+        break;
+    }
+    final payLoad = {"application_no": applicationNo, "role": userRole.value};
+    try {
+      appDio.Response response = await apiService.postApi('verify', payLoad);
+
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        successMessage.value = "${_role} Verified";
+      }
+    } catch (e) {
+      Get.snackbar('Error', "${e.toString()}");
     }
   }
 }

@@ -31,7 +31,7 @@ class ProfilePage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Obx(() {
-        final profile= controller.studentProfile.value;
+        // final profile= controller.studentProfile.value;
         return Column(
           children: [
             SizedBox(height: 10.h),
@@ -46,11 +46,11 @@ class ProfilePage extends StatelessWidget {
             ),
             SizedBox(height: 10.h),
             Text(
-              profile?.stdNm?.toString() ?? '',
+              "Test", // profile?.stdNm?.toString() ?? '',
               style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
             ),
             Text(
-              controller.scannedValue.value.toString(),
+              "test scan rol",
               style: TextStyle(fontSize: 12.sp, color: Colors.grey),
             ),
             SizedBox(height: 20.h),

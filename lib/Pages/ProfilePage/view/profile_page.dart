@@ -39,9 +39,12 @@ class ProfilePage extends GetView<ProfileController> {
               child: CircleAvatar(
                 radius: 45.r,
                 backgroundColor: Colors.grey.shade300,
-                backgroundImage: const NetworkImage(
-                  'https://abhijithjeejamon.netlify.app/assets/img/abhi.jpg',
-                ),
+                backgroundImage:
+                    controller.profileImg.value != null
+                        ? MemoryImage(controller.profileImg.value!)
+                        : NetworkImage(
+                          'https://www.shutterstock.com/image-vector/vector-flat-illustration-grayscale-avatar-600nw-2264922221.jpg',
+                        ),
               ),
             ),
             SizedBox(height: 10.h),
@@ -122,7 +125,9 @@ class ProfilePage extends GetView<ProfileController> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            // controller.fetchStudentData(controller.scanedValue.value);
+                            controller.markUs(
+                              profile?.applicationNo?.toString() ?? '',
+                            );
                           }, // You can add your function here
                           child: Container(
                             width: 0.7.sw,

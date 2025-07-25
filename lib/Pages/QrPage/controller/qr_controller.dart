@@ -80,39 +80,7 @@ class QrController extends GetxController {
     }
   }
 
-  /// Used in ProfilePage to mark user presence
-  Future<void> markUs(String applicationNo) async {
-    final _role = await appStorage.read('role');
-
-    switch (_role) {
-      case 'Gate':
-        userRole.value = "1";
-        break;
-      case 'Teacher':
-        userRole.value = "2";
-        break;
-      case 'Warden':
-        userRole.value = "3";
-        break;
-    }
-
-    final payload = {
-      "application_no": applicationNo,
-      "role": userRole.value,
-    };
-
-    try {
-      final appDio.Response response = await apiService.postApi('verify', payload);
-
-      if (response.statusCode == 200 && response.data['success'] == true) {
-        successMessage.value = "$_role Verified";
-      } else {
-        Get.snackbar("Failed", "Verification failed");
-      }
-    } catch (e) {
-      Get.snackbar("Error", e.toString());
-    }
-  }
+  
 
   void backToHome() {
     userData.value = null;

@@ -43,6 +43,8 @@ dependencies:
   flutter_secure_storage: ^9.2.4
   flutter_native_splash: ^2.3.2
   flutter_html:
+  ai_barcode_scanner: 3.4.1
+
 
 dev_dependencies:
   flutter_test:

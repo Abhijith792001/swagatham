@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:swagatham/Pages/ProfilePage/controller/profile_controller.dart';
+import 'package:intl/intl.dart';
 
 class ProfilePage extends GetView<ProfileController> {
   const ProfilePage({super.key});
@@ -32,29 +33,45 @@ class ProfilePage extends GetView<ProfileController> {
       body: Obx(() {
         final profile = controller.userData.value.profileInfo;
         final canDetails = controller.userData.value.canInfo;
+
         return Column(
           children: [
             SizedBox(height: 10.h),
             Center(
               child: CircleAvatar(
-                radius: 45.r,
-                backgroundColor: Colors.grey.shade300,
-                backgroundImage:
+                radius: 50.r,
+                backgroundColor: Colors.white,
+                child:
                     controller.profileImg.value != null
-                        ? MemoryImage(controller.profileImg.value!)
-                        : NetworkImage(
-                          'https://www.shutterstock.com/image-vector/vector-flat-illustration-grayscale-avatar-600nw-2264922221.jpg',
+                        ? ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(100)),
+                          child: Image(
+                            image: MemoryImage(
+                              controller.profileImg.value!,
+                              scale: 1,
+                            ),
+                            width: 160.w, // your desired width
+                            height: 160.h, // your desired height
+                            fit:
+                                BoxFit
+                                    .cover, // optional: how the image should be fitted
+                          ),
+                        )
+                        : Image(
+                          image: NetworkImage(
+                            "https://www.shutterstock.com/image-vector/vector-flat-illustration-grayscale-avatar-600nw-2264922221.jpg",
+                          ),
                         ),
               ),
             ),
             SizedBox(height: 10.h),
             Text(
               profile?.stdNm?.toString() ?? 'Not Defined',
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
             ),
             Text(
               profile?.applicationNo?.toString() ?? 'Not Defined',
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+              style: TextStyle(fontSize: 12.5.sp, color: Colors.grey),
             ),
             SizedBox(height: 20.h),
             Expanded(
@@ -82,40 +99,81 @@ class ProfilePage extends GetView<ProfileController> {
                     MiniInfoTile(
                       icon: LucideIcons.userCheck,
                       title: 'Hosteller/Day Scholar',
-                      value: 'Hosteller',
+                      value:
+                          controller.userData.value.hostelInfo == null
+                              ? 'Day Scholar'
+                              : 'Hosteler',
                     ),
-                    MiniStatusTile(
-                      icon: LucideIcons.calendarCheck2,
-                      title: 'Hostel Arrival Date',
-                      date: '15/07/2025',
-                      status: 'IN', // or 'OUT'
-                    ),
-                    MiniInfoTile(
-                      icon: LucideIcons.bedDouble,
-                      title: 'Hostel Room Number',
-                      value: 'G12',
-                    ),
-                    MiniInfoTile(
-                      icon: LucideIcons.building2,
-                      title: 'Building Name',
-                      value: 'B-Block',
-                    ),
+                    controller.userData.value.hostelInfo == null
+                        ? Container()
+                        : Column(
+                          children: [
+                            MiniStatusTile(
+                              icon: LucideIcons.calendarCheck2,
+                              title: 'Hostel Arrival Date',
+                              date:
+                                  controller.userData.value.hostelInfo == null
+                                      ? "Not Joined"
+                                      : DateFormat('dd/MM/yyyy').format(
+                                        DateTime.parse(
+                                          controller
+                                              .userData
+                                              .value
+                                              .hostelInfo!
+                                              .hostelOn
+                                              .toString(),
+                                        ),
+                                      ),
+
+                              status:
+                                  controller.userData.value.hostelInfo == null
+                                      ? null
+                                      : "IN",
+
+                              statusColor: Colors.green, // or 'OUT'
+                            ),
+                            MiniInfoTile(
+                              icon: LucideIcons.bedDouble,
+                              title: 'Hostel Room Number',
+                              value: 'G12',
+                            ),
+                            MiniInfoTile(
+                              icon: LucideIcons.building2,
+                              title: 'Building Name',
+                              value: 'B-Block',
+                            ),
+                          ],
+                        ),
                     MiniStatusTile(
                       icon: LucideIcons.calendarDays,
                       title: 'Campus Arrival Date',
-                      date: '15/07/2025',
+                      date:
+                          controller.userData.value.hostelInfo == null
+                              ? "Not Joined"
+                              : DateFormat('dd/MM/yyyy').format(
+                                DateTime.parse(
+                                  controller
+                                      .userData
+                                      .value
+                                      .canInfo!
+                                      .campusInductionDate
+                                      .toString(),
+                                ),
+                              ),
                       status: 'IN',
+                      statusColor: Colors.green,
                     ),
                     MiniStatusTile(
                       icon: LucideIcons.fileCheck2,
                       title: 'Document',
-                      date: '15/07/2025',
-                      status: 'OUT',
+                      date: '',
+                      status: '${controller.userData.value.profileInfo?.stdProfVerFinalStatus ?? 'Pending'}',
+                      statusColor:controller.userData.value.profileInfo==null?Colors.red: controller.userData.value.profileInfo!.stdProfVerFinalStatus =='Verified' ? Colors.green:Colors.red,
                     ),
                     MiniInfoTile(
                       icon: LucideIcons.mapPin,
                       title: 'Location',
-                      value: 'Amrita Campus',
+                      value: 'Coimbatore campus',
                     ),
 
                     SizedBox(height: 20.h),
@@ -247,20 +305,22 @@ class MiniStatusTile extends StatelessWidget {
   final IconData icon;
   final String title;
   final String date;
-  final String status;
+  final String? status;
+  final Color statusColor;
 
   const MiniStatusTile({
     super.key,
     required this.icon,
     required this.title,
     required this.date,
-    required this.status,
+    required this.statusColor,
+    this.status,
   });
 
   @override
   Widget build(BuildContext context) {
-    Color statusColor =
-        status.toUpperCase() == 'IN' ? Colors.green : Colors.red;
+    // Color statusColor =
+    //     status.toUpperCase() == 'IN' ? Colors.green : Colors.red;
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 6.h),
       child: Row(
@@ -279,22 +339,27 @@ class MiniStatusTile extends StatelessWidget {
                   style: TextStyle(fontSize: 13.sp, color: Colors.grey[700]),
                 ),
                 SizedBox(width: 8.w),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-                  decoration: BoxDecoration(
-                    color: statusColor.withOpacity(0.1),
-                    border: Border.all(color: statusColor),
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  child: Text(
-                    status.toUpperCase(),
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: statusColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                status != null
+                    ? Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 2.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: statusColor.withOpacity(0.1),
+                        border: Border.all(color: statusColor),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Text(
+                        status!,
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: statusColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                    : Container(),
               ],
             ),
           ),

@@ -44,6 +44,9 @@ dependencies:
   flutter_native_splash: ^2.3.2
   flutter_html:
   ai_barcode_scanner: 3.4.1
+  permission_handler: ^11.3.0
+  intl: ^0.20.2
+
 
 
 dev_dependencies:

@@ -6,6 +6,8 @@ import 'package:swagatham/routes/app_routes.dart';
 import 'package:swagatham/service/api_service.dart';
 import 'package:swagatham/utils/storage_manger.dart';
 import 'package:dio/dio.dart' as appDio;
+import 'package:permission_handler/permission_handler.dart';
+
 
 class QrController extends GetxController {
   final scannerController = MobileScannerController(
@@ -23,28 +25,42 @@ class QrController extends GetxController {
   final StorageManger appStorage = StorageManger();
 
   /// Handles scan result from AiBarcodeScanner
-  Future<void> onCodeDetected(BarcodeCapture capture) async {
-    final code = capture.barcodes.firstOrNull?.rawValue;
-
-    if (code == null || !isScanning.value) return;
-
-    scannedValue.value = code;
-    isScanning.value = false;
-
-    log("Scanned: $code");
-
-    await fetchStudentData(code);
-
-    if (userData.value != null) {
-      if (Get.context != null) {
-        Get.offNamed(AppRoutes.profilePage,arguments: {'studentProfileData':userData.value});
-      }
-    } else {
-      Get.snackbar("Error", "Student not found");
-      await Future.delayed(const Duration(seconds: 2));
-      isScanning.value = true;
+ Future<void> onCodeDetected(BarcodeCapture capture) async {
+  // Step 1: Check Camera Permission
+  var cameraStatus = await Permission.camera.status;
+  if (!cameraStatus.isGranted) {
+    final result = await Permission.camera.request();
+    if (!result.isGranted) {
+      Get.snackbar("Permission Denied", "Camera permission is required to scan QR");
+      return;
     }
   }
+
+  // Step 2: Continue if permission granted
+  final code = capture.barcodes.firstOrNull?.rawValue;
+
+  if (code == null || !isScanning.value) return;
+
+  scannedValue.value = code;
+  isScanning.value = false;
+
+  log("Scanned: $code");
+
+  await fetchStudentData(code);
+
+  if (userData.value != null) {
+    if (Get.context != null) {
+      Get.offNamed(AppRoutes.profilePage, arguments: {
+        'studentProfileData': userData.value,
+      });
+    }
+  } else {
+    Get.snackbar("Error", "Student not found");
+    await Future.delayed(const Duration(seconds: 2));
+    isScanning.value = true;
+  }
+}
+
 
   /// Fetches student profile by application number
   Future<void> fetchStudentData(String applicationNo) async {

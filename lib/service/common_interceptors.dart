@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 class CustomInterceptors extends Interceptor {
   final Map<String , String > headers;
@@ -10,6 +12,8 @@ class CustomInterceptors extends Interceptor {
 
 
     print('REQUEST[${options.method}] => PATH: ${options.path}');
+
+// print(_curlString(options));
 
     options.headers.addAll(headers);
     super.onRequest(options, handler);
@@ -26,4 +30,17 @@ class CustomInterceptors extends Interceptor {
     print('ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}');
     super.onError(err, handler);
   }
+  //  String _curlString(     RequestOptions  request) {
+  //   String result = '';
+  //   result += "curl --request  ${request.method} '${request.uri}' \\\n";
+  //    request.headers.forEach((k, v) => result += "--header '$k: $v' \\\n");
+  //   final contentType =   request.headers[HttpHeaders.contentTypeHeader]?.toLowerCase();
+  //   if (contentType == null) {
+  //     result = result.substring(0, result.length - 2);
+  //     return result;
+  //   }
+  //   final body = request.data;
+  //     result += "--data-raw '${body}'";  
+  //   return result;
+  // }
 }

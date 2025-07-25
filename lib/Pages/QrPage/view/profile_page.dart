@@ -18,7 +18,7 @@ class ProfilePage extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(LucideIcons.chevronLeft, color: Colors.white),
-          onPressed: () => Get.offAllNamed(AppRoutes.homePage),
+          onPressed: () => controller.backToHome(),
         ),
         title: Text(
           'Student Profile',
@@ -31,7 +31,7 @@ class ProfilePage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Obx(() {
-        // final profile= controller.studentProfile.value;
+        final profile = controller.studentProfile.value;
         return Column(
           children: [
             SizedBox(height: 10.h),
@@ -46,11 +46,11 @@ class ProfilePage extends StatelessWidget {
             ),
             SizedBox(height: 10.h),
             Text(
-              "Test", // profile?.stdNm?.toString() ?? '',
+              profile?.stdNm?.toString() ?? '',
               style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
             ),
             Text(
-              "test scan rol",
+              profile?.applicationNo?.toString() ?? '',
               style: TextStyle(fontSize: 12.sp, color: Colors.grey),
             ),
             SizedBox(height: 20.h),
@@ -60,7 +60,6 @@ class ProfilePage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Replace old tiles inside Column(children: [...]) in body with this updated section
                     SectionTitle(title: 'Profile Details'),
                     // MiniInfoTile(
                     //   icon: LucideIcons.user,
@@ -123,7 +122,7 @@ class ProfilePage extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            // controller.fetchStudentData("1001003334");
+                            // controller.fetchStudentData(controller.scanedValue.value);
                           }, // You can add your function here
                           child: Container(
                             width: 0.7.sw,

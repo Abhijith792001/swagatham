@@ -22,17 +22,16 @@ class ApiService {
     dio.interceptors.add(CustomInterceptors(headers: headers));
   }
 
-  Future<Response> postApi(String endpoint, Map<String, dynamic> data) async {
+  Future<Response> postApi(String endpoint,  data) async {
     try {
       final response = await dio.post(
         endpoint,
-        data: data,
+        data: json.encode(data),
         options: Options(
           responseType: ResponseType.json,
         ),
       );
 
-      // Ensure response data is properly parsed
       if (response.data is String) {
         response.data = _parseResponse(response.data);
       }

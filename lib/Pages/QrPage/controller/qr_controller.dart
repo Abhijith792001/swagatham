@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -81,6 +82,7 @@ class QrController extends GetxController {
       Get.offNamed(AppRoutes.profilePage);
     } else {
       // Resume scanning if API failed or no data
+      Get.toNamed(AppRoutes.homePage);
       Get.snackbar(
         'Error',
         'Failed to fetch student data. Please try again.',
@@ -175,13 +177,12 @@ class QrController extends GetxController {
 
   Future<void> fetchStudentData(String applicationNo) async {
     print("--------------->applicationNo $applicationNo");
-
+    final data = {"application_no": "$applicationNo"};
     try {
       isLoading.value = true;
-      final payLoad = {"application_no": "1001003334"};
       final appDio.Response response = await apiService.postApi(
         'profile',
-        payLoad,
+        data,
       );
 
       print(response);
@@ -229,5 +230,12 @@ class QrController extends GetxController {
     } catch (e) {
       Get.snackbar('Error', "${e.toString()}");
     }
+  }
+
+
+  backToHome(){
+    studentProfile.value = null;
+    Get.offAllNamed(AppRoutes.homePage);
+    print("value is cleared ${studentProfile.value}");
   }
 }

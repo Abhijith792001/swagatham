@@ -59,8 +59,13 @@ class QrController extends GetxController {
       print("responseresponseresponseresponseresponseresponse ${response}");
 
       if (response.statusCode == 200) {
+        print(
+          '${response.statusCode}'
+        );
         final studentModel = StudentModel.fromJson(response.data);
         final profile = studentModel.user;
+
+      
 
 
 

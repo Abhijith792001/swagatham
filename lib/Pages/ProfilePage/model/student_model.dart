@@ -28,8 +28,10 @@ class StudentModel {
 class User {
   ProfileInfo? profileInfo;
   CanInfo? canInfo;
+  HostelInfo? hostelInfo;
+  BusInfo? busInfo;
 
-  User({this.profileInfo, this.canInfo});
+  User({this.profileInfo, this.canInfo, this.hostelInfo, this.busInfo});
 
   User.fromJson(Map<String, dynamic> json) {
     profileInfo = json['profile_info'] != null
@@ -37,6 +39,12 @@ class User {
         : null;
     canInfo = json['can_info'] != null
         ? new CanInfo.fromJson(json['can_info'])
+        : null;
+    hostelInfo = json['hostel_info'] != null && json['hostel_info']!=false
+        ? new HostelInfo.fromJson(json['hostel_info'])
+        : null;
+    busInfo = json['bus_info'] != null  && json['bus_info']!=false
+        ? new BusInfo.fromJson(json['bus_info'])
         : null;
   }
 
@@ -48,27 +56,33 @@ class User {
     if (this.canInfo != null) {
       data['can_info'] = this.canInfo!.toJson();
     }
+    if (this.hostelInfo != null) {
+      data['hostel_info'] = this.hostelInfo!.toJson();
+    }
+    if (this.busInfo != null) {
+      data['bus_info'] = this.busInfo!.toJson();
+    }
     return data;
   }
 }
 
 class ProfileInfo {
-  Null? splznId;
+  String? splznId;
   String? pgmId;
   String? stdId;
-  Null? bchId;
+  String? bchId;
   String? stdRegId;
   String? enrlYrId;
   String? hrmsSchId;
   String? stdType;
-  Null? rollNo;
+  String? rollNo;
   String? applicationNo;
-  Null? referenceNo;
-  Null? aoapPgmId;
-  Null? aoapSplznId;
-  Null? otherAppNo;
-  Null? otherDesc;
-  Null? studentRegDate;
+  String? referenceNo;
+  String? aoapPgmId;
+  String? aoapSplznId;
+  String? otherAppNo;
+  String? otherDesc;
+  String? studentRegDate;
   String? stdDocVerFinalStatus;
   String? stdProfVerFinalStatus;
   String? stdEligibilityStat;
@@ -78,22 +92,22 @@ class ProfileInfo {
   String? pgmIdAdmn;
   String? splznIdAdmn;
   String? stdProfImportStatus;
-  Null? stdEligibilityStatUpdatedBy;
+  String? stdEligibilityStatUpdatedBy;
   String? stdEligibilityStatUpdatedAt;
   String? stdRegCreatedAt;
   String? stdAdmType;
   String? slab;
   String? whatsappNo;
-  Null? contactEmail;
+  String? contactEmail;
   String? stdRegUpdtdAt;
   String? stdRollNoCrtdAt;
-  Null? stdidtest;
+  String? stdidtest;
   String? remSts;
   String? stdDocPhyFinalVerStatus;
   String? stdEnrlSts;
-  Null? stdEnrlStsReason;
+  String? stdEnrlStsReason;
   String? remStsBtech;
-  Null? stdRegHstlUpdtdAt;
+  String? stdRegHstlUpdtdAt;
   String? stdLoginStatus;
   String? apiData;
   String? medicalFormSub;
@@ -108,11 +122,11 @@ class ProfileInfo {
   String? genStdWhatsaap;
   String? genCreatedAt;
   String? genUpdatedAt;
-  Null? genUpdtdBy;
-  Null? bchNm;
-  Null? deptId;
-  Null? acdYrId;
-  Null? bchSts;
+  String? genUpdtdBy;
+  String? bchNm;
+  String? deptId;
+  String? acdYrId;
+  String? bchSts;
   String? stdNm;
   String? stdEml;
   String? stdMble;
@@ -123,7 +137,7 @@ class ProfileInfo {
   String? stsSts;
   String? stdGndr;
   String? stdWhatsaap;
-  Null? stdNm1;
+  String? stdNm1;
   String? pgmNm;
   String? dispPgmNm;
   String? fcltyId;
@@ -131,12 +145,12 @@ class ProfileInfo {
   String? pgmSts;
   String? pgmCode;
   String? pgmDurYear;
-  Null? pgmSemCount;
+  String? pgmSemCount;
   String? pgmCodeAct;
-  Null? splznNm;
-  Null? splznSts;
-  Null? splznCode;
-  Null? splznRollCode;
+  String? splznNm;
+  String? splznSts;
+  String? splznCode;
+  String? splznRollCode;
 
   ProfileInfo(
       {this.splznId,
@@ -426,6 +440,100 @@ class CanInfo {
     data['application_no'] = this.applicationNo;
     data['can_number'] = this.canNumber;
     data['campus_induction_date'] = this.campusInductionDate;
+    return data;
+  }
+}
+
+class HostelInfo {
+  String? stdRegId;
+  String? roomId;
+  String? hostReqDate;
+  String? fnlPaid;
+  String? fnlPaidOn;
+  String? hostelBy;
+  String? hostelOn;
+  String? hostelUpdatedAt;
+
+  HostelInfo(
+      {this.stdRegId,
+      this.roomId,
+      this.hostReqDate,
+      this.fnlPaid,
+      this.fnlPaidOn,
+      this.hostelBy,
+      this.hostelOn,
+      this.hostelUpdatedAt});
+
+  HostelInfo.fromJson(Map<String, dynamic> json) {
+    stdRegId = json['std_reg_id'];
+    roomId = json['room_id'];
+    hostReqDate = json['host_req_date'];
+    fnlPaid = json['fnl_paid'];
+    fnlPaidOn = json['fnl_paid_on'];
+    hostelBy = json['hostel_by'];
+    hostelOn = json['hostel_on'];
+    hostelUpdatedAt = json['hostel_updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['std_reg_id'] = this.stdRegId;
+    data['room_id'] = this.roomId;
+    data['host_req_date'] = this.hostReqDate;
+    data['fnl_paid'] = this.fnlPaid;
+    data['fnl_paid_on'] = this.fnlPaidOn;
+    data['hostel_by'] = this.hostelBy;
+    data['hostel_on'] = this.hostelOn;
+    data['hostel_updated_at'] = this.hostelUpdatedAt;
+    return data;
+  }
+}
+
+class BusInfo {
+  String? stdRegId;
+  String? rtNm;
+  String? brdngPnt;
+  String? busFeeId;
+  String? payDt;
+  String? busCrtdAt;
+  String? busBy;
+  String? busOn;
+  String? busBptId;
+
+  BusInfo(
+      {this.stdRegId,
+      this.rtNm,
+      this.brdngPnt,
+      this.busFeeId,
+      this.payDt,
+      this.busCrtdAt,
+      this.busBy,
+      this.busOn,
+      this.busBptId});
+
+  BusInfo.fromJson(Map<String, dynamic> json) {
+    stdRegId = json['std_reg_id'];
+    rtNm = json['rt_nm'];
+    brdngPnt = json['brdng_pnt'];
+    busFeeId = json['bus_fee_id'];
+    payDt = json['pay_dt'];
+    busCrtdAt = json['bus_crtd_at'];
+    busBy = json['bus_by'];
+    busOn = json['bus_on'];
+    busBptId = json['bus_bpt_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['std_reg_id'] = this.stdRegId;
+    data['rt_nm'] = this.rtNm;
+    data['brdng_pnt'] = this.brdngPnt;
+    data['bus_fee_id'] = this.busFeeId;
+    data['pay_dt'] = this.payDt;
+    data['bus_crtd_at'] = this.busCrtdAt;
+    data['bus_by'] = this.busBy;
+    data['bus_on'] = this.busOn;
+    data['bus_bpt_id'] = this.busBptId;
     return data;
   }
 }

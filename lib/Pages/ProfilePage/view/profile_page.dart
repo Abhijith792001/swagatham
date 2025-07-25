@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:swagatham/Pages/QrPage/controller/qr_controller.dart';
-import 'package:swagatham/routes/app_routes.dart';
+import 'package:swagatham/Pages/ProfilePage/controller/profile_controller.dart';
 
-class ProfilePage extends StatelessWidget {
-  ProfilePage({super.key});
-  final controller = Get.put(QrController());
+class ProfilePage extends GetView<ProfileController> {
+  const ProfilePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +30,8 @@ class ProfilePage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Obx(() {
-        final profile = controller.studentProfile.value;
+        final profile = controller.userData.value.profileInfo;
+        final canDetails = controller.userData.value.canInfo;
         return Column(
           children: [
             SizedBox(height: 10.h),
@@ -46,11 +46,11 @@ class ProfilePage extends StatelessWidget {
             ),
             SizedBox(height: 10.h),
             Text(
-              profile?.stdNm?.toString() ?? '',
+              profile?.stdNm?.toString() ?? 'Not Defined',
               style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
             ),
             Text(
-              profile?.applicationNo?.toString() ?? '',
+              profile?.applicationNo?.toString() ?? 'Not Defined',
               style: TextStyle(fontSize: 12.sp, color: Colors.grey),
             ),
             SizedBox(height: 20.h),
@@ -69,12 +69,12 @@ class ProfilePage extends StatelessWidget {
                     MiniInfoTile(
                       icon: LucideIcons.bookOpen,
                       title: 'Course',
-                      value: 'BCA (2023 – 2026)',
+                      value: profile?.pgmNm?.toString() ?? "",
                     ),
                     MiniInfoTile(
                       icon: LucideIcons.badgeIndianRupee,
                       title: 'CAN Number',
-                      value: '24508545HFKHF',
+                      value: canDetails?.canNumber?.toString() ?? '',
                     ),
                     MiniInfoTile(
                       icon: LucideIcons.userCheck,

@@ -1,10 +1,10 @@
 import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
+import 'package:swagatham/Pages/ProfilePage/model/student_model.dart';
 import 'package:swagatham/routes/app_routes.dart';
 import 'package:swagatham/service/api_service.dart';
 import 'package:swagatham/utils/storage_manger.dart';
-import 'package:swagatham/Pages/QrPage/model/student_model.dart';
 import 'package:dio/dio.dart' as appDio;
 
 class QrController extends GetxController {
@@ -12,7 +12,7 @@ class QrController extends GetxController {
     detectionSpeed: DetectionSpeed.normal,
   );
 
-  Rx<ProfileInfo?> studentProfile = Rx<ProfileInfo?>(null);
+  Rx<User?> userData = Rx<User?>(null);
   RxString scannedValue = ''.obs;
   RxBool isScanning = true.obs;
   RxBool isLoading = false.obs;
@@ -35,9 +35,9 @@ class QrController extends GetxController {
 
     await fetchStudentData(code);
 
-    if (studentProfile.value != null) {
+    if (userData.value != null) {
       if (Get.context != null) {
-        Get.offNamed(AppRoutes.profilePage);
+        Get.offNamed(AppRoutes.profilePage,arguments: {'studentProfileData':userData.value});
       }
     } else {
       Get.snackbar("Error", "Student not found");
@@ -60,13 +60,13 @@ class QrController extends GetxController {
 
       if (response.statusCode == 200) {
         final studentModel = StudentModel.fromJson(response.data);
-        final profile = studentModel.user?.profileInfo;
+        final profile = studentModel.user;
 
 
 
         if (profile != null) {
-          studentProfile.value = profile;
-          log("Fetched profile: ${studentProfile.value}");
+          userData.value = profile;
+          log("Fetched profile: ${userData.value}");
         } else {
           Get.snackbar("Error", "Profile data is empty");
         }
@@ -115,7 +115,7 @@ class QrController extends GetxController {
   }
 
   void backToHome() {
-    studentProfile.value = null;
+    userData.value = null;
     Get.offAllNamed(AppRoutes.homePage);
     log("Cleared profile data");
   }

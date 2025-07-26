@@ -153,4 +153,8 @@ class ProfileController extends GetxController {
     Get.offAllNamed(AppRoutes.homePage);
     log("Cleared profile data");
   }
+
+  void clearUserData(){
+    userData.value = User();
+  }
 }

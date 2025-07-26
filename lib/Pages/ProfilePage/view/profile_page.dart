@@ -252,7 +252,8 @@ class ProfilePage extends GetView<ProfileController> {
 
                     SizedBox(height: 20.h),
 
-                    ( controller.userData.value.hostelInfo == null && controller.userRole.value == '3')
+                    (controller.userData.value.hostelInfo == null &&
+                            controller.userRole.value == '3')
                         ? Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -332,6 +333,7 @@ class ProfilePage extends GetView<ProfileController> {
                       children: [
                         InkWell(
                           onTap: () {
+                            controller.clearUserData();
                             Get.offAllNamed(AppRoutes.qrPage);
                           },
                           child: Chip(

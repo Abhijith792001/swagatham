@@ -550,23 +550,23 @@ class AddditionalInfo {
   String? stdRegId;
   String? noOfAccompany;
   String? reportingType;
-  Null? inTime;
-  Null? outTime;
+  String? inTime;
+  String? outTime;
   String? updatedAt;
-  Null? createdAt;
-  Null? hostelArrivalDate;
+  String? createdAt;
+  String? hostelArrivalDate;
   String? campusArrivalDate;
   String? pdfDownloaded;
-  Null? pdfDownloadedAt;
+  String? pdfDownloadedAt;
   String? gateVerifyStatus;
   String? gateVerifiedOn;
   String? documentVerifyStatus;
   String? documentVerifiedOn;
   String? hostelCheckStatus;
-  Null? hostelCheckInBy;
+  String? hostelCheckInBy;
   String? hostelCheckInDate;
   String? comingBy;
-  Null? personalCarNo;
+  String? personalCarNo;
 
   AddditionalInfo(
       {this.addtnlId,

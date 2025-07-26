@@ -30,12 +30,26 @@ class ProfileController extends GetxController {
     userData.value = await Get.arguments['studentProfileData'];
     print("profile data img${jsonEncode(userData.value)}");
     getStudentImg();
+    
   }
 
   @override
-  void onInit() {
+  void onInit() async{
     // TODO: implement onInit
     super.onInit();
+     final _role = await appStorage.read('role');
+
+    switch (_role) {
+      case 'Gate':
+        userRole.value = "1";
+        break;
+      case 'Teacher':
+        userRole.value = "2";
+        break;
+      case 'Warden':
+        userRole.value = "3";
+        break;
+    }
   }
 
   getStudentImg() async {

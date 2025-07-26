@@ -163,18 +163,87 @@ class ProfilePage extends GetView<ProfileController> {
                                       .toString(),
                                 ),
                               ),
-                      status: controller.userData.value.hostelInfo == null ? null : 'Not',
+                      status:
+                          controller.userData.value.hostelInfo == null
+                              ? 'IN'
+                              : null,
                       statusColor: Colors.green,
                     ),
-                    MiniStatusTile(
-                      icon: LucideIcons.fileCheck2,
-                      title: 'Document',
-                      date: '',
-                      status: controller.userData.value.addditionalInfo?.documentVerifyStatus.toString() ?? 'Pending', 
-                      statusColor: controller.userData.value.addditionalInfo?.documentVerifyStatus?.toString() == 'Verified' ? Colors.green : Colors.red,
-                      
-                          
-                    ),
+                    (controller.userRole.value == '3' &&
+                            controller.userData.value.hostelInfo != null)
+                        ? MiniStatusTile(
+                          icon: LucideIcons.fileCheck2,
+                          title: 'Hostel Status',
+                          date: '',
+                          status:
+                              controller
+                                  .userData
+                                  .value
+                                  .addditionalInfo
+                                  ?.hostelCheckStatus ??
+                              'Pending',
+                          statusColor:
+                              controller
+                                          .userData
+                                          .value
+                                          .addditionalInfo
+                                          ?.hostelCheckStatus ==
+                                      'Verified'
+                                  ? Colors.green
+                                  : Colors.red,
+                        )
+                        : const SizedBox.shrink(),
+
+                    controller.userRole.value == '2'
+                        ? MiniStatusTile(
+                          icon: LucideIcons.fileCheck2,
+                          title: 'Document Status',
+                          date: '',
+                          status:
+                              controller
+                                  .userData
+                                  .value
+                                  .addditionalInfo
+                                  ?.documentVerifyStatus
+                                  .toString() ??
+                              'Pending',
+                          statusColor:
+                              controller
+                                          .userData
+                                          .value
+                                          .addditionalInfo
+                                          ?.documentVerifyStatus
+                                          ?.toString() ==
+                                      'Verified'
+                                  ? Colors.green
+                                  : Colors.red,
+                        )
+                        : Container(),
+                    controller.userRole.value == '1'
+                        ? MiniStatusTile(
+                          icon: LucideIcons.fileCheck2,
+                          title: 'Gate Status',
+                          date: '',
+                          status:
+                              controller
+                                  .userData
+                                  .value
+                                  .addditionalInfo
+                                  ?.gateVerifyStatus
+                                  .toString() ??
+                              'Pending',
+                          statusColor:
+                              controller
+                                          .userData
+                                          .value
+                                          .addditionalInfo
+                                          ?.gateVerifyStatus
+                                          ?.toString() ==
+                                      'Verified'
+                                  ? Colors.green
+                                  : Colors.red,
+                        )
+                        : Container(),
                     MiniInfoTile(
                       icon: LucideIcons.mapPin,
                       title: 'Location',
@@ -183,61 +252,80 @@ class ProfilePage extends GetView<ProfileController> {
 
                     SizedBox(height: 20.h),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            controller.markUs(
-                              profile?.applicationNo?.toString() ?? '',
-                            );
-                          }, // You can add your function here
-                          child: Container(
-                            width: 0.7.sw,
-                            padding: EdgeInsets.symmetric(
-                              vertical: 12.h,
-                              horizontal: 20.w,
-                            ),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Color(0xffd4145a), Color(0xffa4123f)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+                    ( controller.userData.value.hostelInfo == null && controller.userRole.value == '3')
+                        ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Access denied: You can’t \nmanage this student.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.red,
+                                fontWeight: FontWeight.w600,
                               ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  blurRadius: 8,
-                                  offset: Offset(0, 4),
-                                ),
-                              ],
-                              borderRadius: BorderRadius.circular(18.r),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  LucideIcons.circleCheck,
-                                  size: 20.sp,
-                                  color: Colors.white,
+                          ],
+                        )
+                        : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                controller.markUs(
+                                  profile?.applicationNo?.toString() ?? '',
+                                );
+                              }, // You can add your function here
+                              child: Container(
+                                width: 0.7.sw,
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 12.h,
+                                  horizontal: 20.w,
                                 ),
-                                SizedBox(width: 8.w),
-                                Text(
-                                  'Mark Us In',
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    letterSpacing: 0.5,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xffd4145a),
+                                      Color(0xffa4123f),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
                                   ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.2),
+                                      blurRadius: 8,
+                                      offset: Offset(0, 4),
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(18.r),
                                 ),
-                              ],
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      LucideIcons.circleCheck,
+                                      size: 20.sp,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(width: 8.w),
+                                    Text(
+                                      'Mark as in',
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        letterSpacing: 0.5,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 10.h,),
+
+                    SizedBox(height: 10.h),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,

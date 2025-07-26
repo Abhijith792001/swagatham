@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:swagatham/Pages/QrPage/controller/qr_controller.dart';
 import 'package:swagatham/routes/app_routes.dart';
 import 'package:swagatham/utils/storage_manger.dart';
 
@@ -13,7 +14,12 @@ class HomeController extends GetxController {
   }
 
   logOut() {
+
+    
     appStorage.deleteAll();
+    if(Get.isRegistered<QrController>()){
+      Get.find<QrController>().userData.value = null;
+    }
     Get.offAllNamed(AppRoutes.loginPage);
     Get.snackbar('Logout', 'Logout succesfully');
   }

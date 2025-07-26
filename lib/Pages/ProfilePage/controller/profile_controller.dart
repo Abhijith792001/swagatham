@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'dart:developer';
 import 'dart:typed_data';
 import 'package:dio/dio.dart' as appDio;
 import 'package:get/get.dart';
 import 'package:swagatham/Pages/ProfilePage/model/student_model.dart';
+import 'package:swagatham/Pages/QrPage/controller/qr_controller.dart';
 import 'package:swagatham/routes/app_routes.dart';
 import 'package:swagatham/service/api_service.dart';
 import 'package:swagatham/utils/storage_manger.dart';
@@ -16,6 +18,7 @@ class ProfileController extends GetxController {
   RxBool isLoading = false.obs;
   RxString successMessage = ''.obs;
   RxString userRole = ''.obs;
+  RxBool scanAgain = false.obs;
 
   final ApiService apiService = ApiService();
   final StorageManger appStorage = StorageManger();
@@ -76,13 +79,59 @@ class ProfileController extends GetxController {
       );
 
       if (response.statusCode == 200 && response.data['success'] == true) {
+        scanAgain.value = true;
         successMessage.value = "$_role Verified";
-
+        fetchStudentData(applicationNo);
+        log('$_role Verified');
+        Get.snackbar(
+          "Success",
+          "Verification Success",
+          backgroundColor: const Color.fromARGB(50, 200, 230, 201),
+          borderColor: Colors.green,
+          borderWidth: 1.5, // Optional: Set border width if using borderColor
+          snackPosition: SnackPosition.TOP, // Optional: can be BOTTOM
+          colorText: Colors.black, // Optional: customize text color
+        );
       } else {
         Get.snackbar("Failed", "Verification failed");
       }
     } catch (e) {
       Get.snackbar("Error", e.toString());
+    }
+  }
+
+  Future<void> fetchStudentData(String applicationNo) async {
+    log("Fetching student data for: $applicationNo");
+    final payload = {"application_no": applicationNo};
+
+    try {
+      isLoading.value = true;
+
+      final appDio.Response response = await apiService.postApi(
+        'profile',
+        payload,
+      );
+
+      print("responseresponseresponseresponseresponseresponse ${response}");
+
+      if (response.statusCode == 200) {
+        print('${response.statusCode}');
+        final studentModel = StudentModel.fromJson(response.data);
+        final profile = studentModel.user;
+
+        if (profile != null) {
+          userData.value = profile;
+          log("Fetched profile: ${userData.value}");
+        } else {
+          Get.snackbar("Error", "Profile data is empty");
+        }
+      } else {
+        Get.snackbar("Error", response.data["error"] ?? "API failed");
+      }
+    } catch (e) {
+      Get.snackbar("Exception", e.toString());
+    } finally {
+      isLoading.value = false;
     }
   }
 

@@ -30,6 +30,7 @@ class User {
   CanInfo? canInfo;
   HostelInfo? hostelInfo;
   BusInfo? busInfo;
+  AddditionalInfo? addditionalInfo;
 
   User({this.profileInfo, this.canInfo, this.hostelInfo, this.busInfo});
 
@@ -46,6 +47,9 @@ class User {
     busInfo = json['bus_info'] != null  && json['bus_info']!=false
         ? new BusInfo.fromJson(json['bus_info'])
         : null;
+     addditionalInfo = json['addditional_info'] != null
+        ? new AddditionalInfo.fromJson(json['addditional_info'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -61,6 +65,9 @@ class User {
     }
     if (this.busInfo != null) {
       data['bus_info'] = this.busInfo!.toJson();
+    }
+    if (this.addditionalInfo != null) {
+      data['addditional_info'] = this.addditionalInfo!.toJson();
     }
     return data;
   }
@@ -534,6 +541,103 @@ class BusInfo {
     data['bus_by'] = this.busBy;
     data['bus_on'] = this.busOn;
     data['bus_bpt_id'] = this.busBptId;
+    return data;
+  }
+
+}
+class AddditionalInfo {
+  String? addtnlId;
+  String? stdRegId;
+  String? noOfAccompany;
+  String? reportingType;
+  Null? inTime;
+  Null? outTime;
+  String? updatedAt;
+  Null? createdAt;
+  Null? hostelArrivalDate;
+  String? campusArrivalDate;
+  String? pdfDownloaded;
+  Null? pdfDownloadedAt;
+  String? gateVerifyStatus;
+  String? gateVerifiedOn;
+  String? documentVerifyStatus;
+  String? documentVerifiedOn;
+  String? hostelCheckStatus;
+  Null? hostelCheckInBy;
+  String? hostelCheckInDate;
+  String? comingBy;
+  Null? personalCarNo;
+
+  AddditionalInfo(
+      {this.addtnlId,
+      this.stdRegId,
+      this.noOfAccompany,
+      this.reportingType,
+      this.inTime,
+      this.outTime,
+      this.updatedAt,
+      this.createdAt,
+      this.hostelArrivalDate,
+      this.campusArrivalDate,
+      this.pdfDownloaded,
+      this.pdfDownloadedAt,
+      this.gateVerifyStatus,
+      this.gateVerifiedOn,
+      this.documentVerifyStatus,
+      this.documentVerifiedOn,
+      this.hostelCheckStatus,
+      this.hostelCheckInBy,
+      this.hostelCheckInDate,
+      this.comingBy,
+      this.personalCarNo});
+
+  AddditionalInfo.fromJson(Map<String, dynamic> json) {
+    addtnlId = json['addtnl_id'];
+    stdRegId = json['std_reg_id'];
+    noOfAccompany = json['no_of_accompany'];
+    reportingType = json['reporting_type'];
+    inTime = json['in_time'];
+    outTime = json['out_time'];
+    updatedAt = json['updated_at'];
+    createdAt = json['created_at'];
+    hostelArrivalDate = json['hostel_arrival_date'];
+    campusArrivalDate = json['campus_arrival_date'];
+    pdfDownloaded = json['pdf_downloaded'];
+    pdfDownloadedAt = json['pdf_downloaded_at'];
+    gateVerifyStatus = json['gate_verify_status'];
+    gateVerifiedOn = json['gate_verified_on'];
+    documentVerifyStatus = json['document_verify_status'];
+    documentVerifiedOn = json['document_verified_on'];
+    hostelCheckStatus = json['hostel_check_status'];
+    hostelCheckInBy = json['hostel_check_in_by'];
+    hostelCheckInDate = json['hostel_check_in_date'];
+    comingBy = json['coming_by'];
+    personalCarNo = json['personal_car_no'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['addtnl_id'] = this.addtnlId;
+    data['std_reg_id'] = this.stdRegId;
+    data['no_of_accompany'] = this.noOfAccompany;
+    data['reporting_type'] = this.reportingType;
+    data['in_time'] = this.inTime;
+    data['out_time'] = this.outTime;
+    data['updated_at'] = this.updatedAt;
+    data['created_at'] = this.createdAt;
+    data['hostel_arrival_date'] = this.hostelArrivalDate;
+    data['campus_arrival_date'] = this.campusArrivalDate;
+    data['pdf_downloaded'] = this.pdfDownloaded;
+    data['pdf_downloaded_at'] = this.pdfDownloadedAt;
+    data['gate_verify_status'] = this.gateVerifyStatus;
+    data['gate_verified_on'] = this.gateVerifiedOn;
+    data['document_verify_status'] = this.documentVerifyStatus;
+    data['document_verified_on'] = this.documentVerifiedOn;
+    data['hostel_check_status'] = this.hostelCheckStatus;
+    data['hostel_check_in_by'] = this.hostelCheckInBy;
+    data['hostel_check_in_date'] = this.hostelCheckInDate;
+    data['coming_by'] = this.comingBy;
+    data['personal_car_no'] = this.personalCarNo;
     return data;
   }
 }

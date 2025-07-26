@@ -4,6 +4,9 @@ import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:swagatham/Pages/ProfilePage/controller/profile_controller.dart';
 import 'package:intl/intl.dart';
+import 'package:swagatham/routes/app_routes.dart';
+import 'package:swagatham/theme/app_theme.dart';
+import 'package:swagatham/widgets/primary_btn.dart';
 
 class ProfilePage extends GetView<ProfileController> {
   const ProfilePage({super.key});
@@ -148,27 +151,29 @@ class ProfilePage extends GetView<ProfileController> {
                       icon: LucideIcons.calendarDays,
                       title: 'Campus Arrival Date',
                       date:
-                          controller.userData.value.hostelInfo == null
+                          controller.userData.value.addditionalInfo == null
                               ? "Not Joined"
                               : DateFormat('dd/MM/yyyy').format(
                                 DateTime.parse(
                                   controller
                                       .userData
                                       .value
-                                      .canInfo!
-                                      .campusInductionDate
+                                      .addditionalInfo!
+                                      .campusArrivalDate
                                       .toString(),
                                 ),
                               ),
-                      status: 'IN',
+                      status: controller.userData.value.hostelInfo == null ? null : 'Not',
                       statusColor: Colors.green,
                     ),
                     MiniStatusTile(
                       icon: LucideIcons.fileCheck2,
                       title: 'Document',
                       date: '',
-                      status: '${controller.userData.value.profileInfo?.stdProfVerFinalStatus ?? 'Pending'}',
-                      statusColor:controller.userData.value.profileInfo==null?Colors.red: controller.userData.value.profileInfo!.stdProfVerFinalStatus =='Verified' ? Colors.green:Colors.red,
+                      status: controller.userData.value.addditionalInfo?.documentVerifyStatus.toString() ?? 'Pending', 
+                      statusColor: controller.userData.value.addditionalInfo?.documentVerifyStatus?.toString() == 'Verified' ? Colors.green : Colors.red,
+                      
+                          
                     ),
                     MiniInfoTile(
                       icon: LucideIcons.mapPin,
@@ -228,6 +233,23 @@ class ProfilePage extends GetView<ProfileController> {
                                 ),
                               ],
                             ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10.h,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Get.offAllNamed(AppRoutes.qrPage);
+                          },
+                          child: Chip(
+                            backgroundColor: Colors.grey.shade100,
+                            avatar: Icon(Icons.qr_code, size: 18),
+                            label: Text('Scan Again'),
                           ),
                         ),
                       ],

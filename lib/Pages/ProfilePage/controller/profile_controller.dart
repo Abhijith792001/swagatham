@@ -150,6 +150,7 @@ class ProfileController extends GetxController {
   }
 
   void backToHome() {
+    clearUserData();
     Get.offAllNamed(AppRoutes.homePage);
     log("Cleared profile data");
   }

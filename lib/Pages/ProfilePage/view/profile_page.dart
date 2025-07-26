@@ -344,6 +344,8 @@ class ProfilePage extends GetView<ProfileController> {
                         ),
                       ],
                     ),
+
+                 
                   ],
                 ),
               ),
@@ -458,6 +460,7 @@ class MiniStatusTile extends StatelessWidget {
                         vertical: 2.h,
                       ),
                       decoration: BoxDecoration(
+                        // ignore: deprecated_member_use
                         color: statusColor.withOpacity(0.1),
                         border: Border.all(color: statusColor),
                         borderRadius: BorderRadius.circular(12.r),

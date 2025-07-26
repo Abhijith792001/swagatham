@@ -31,47 +31,52 @@ class User {
   HostelInfo? hostelInfo;
   BusInfo? busInfo;
   AddditionalInfo? addditionalInfo;
+  String? roomNo;  // ✅ New field
+  String? html;    // ✅ New field
 
-  User({this.profileInfo, this.canInfo, this.hostelInfo, this.busInfo});
+  User({
+    this.profileInfo,
+    this.canInfo,
+    this.hostelInfo,
+    this.busInfo,
+    this.addditionalInfo,
+    this.roomNo,
+    this.html,
+  });
 
   User.fromJson(Map<String, dynamic> json) {
     profileInfo = json['profile_info'] != null
-        ? new ProfileInfo.fromJson(json['profile_info'])
+        ? ProfileInfo.fromJson(json['profile_info'])
         : null;
     canInfo = json['can_info'] != null
-        ? new CanInfo.fromJson(json['can_info'])
+        ? CanInfo.fromJson(json['can_info'])
         : null;
-    hostelInfo = json['hostel_info'] != null && json['hostel_info']!=false
-        ? new HostelInfo.fromJson(json['hostel_info'])
+    hostelInfo = json['hostel_info'] != null && json['hostel_info'] != false
+        ? HostelInfo.fromJson(json['hostel_info'])
         : null;
-    busInfo = json['bus_info'] != null  && json['bus_info']!=false
-        ? new BusInfo.fromJson(json['bus_info'])
+    busInfo = json['bus_info'] != null && json['bus_info'] != false
+        ? BusInfo.fromJson(json['bus_info'])
         : null;
-     addditionalInfo = json['addditional_info'] != null
-        ? new AddditionalInfo.fromJson(json['addditional_info'])
+    addditionalInfo = json['addditional_info'] != null
+        ? AddditionalInfo.fromJson(json['addditional_info'])
         : null;
+    roomNo = json['room_no'];
+    html = json['html'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.profileInfo != null) {
-      data['profile_info'] = this.profileInfo!.toJson();
-    }
-    if (this.canInfo != null) {
-      data['can_info'] = this.canInfo!.toJson();
-    }
-    if (this.hostelInfo != null) {
-      data['hostel_info'] = this.hostelInfo!.toJson();
-    }
-    if (this.busInfo != null) {
-      data['bus_info'] = this.busInfo!.toJson();
-    }
-    if (this.addditionalInfo != null) {
-      data['addditional_info'] = this.addditionalInfo!.toJson();
-    }
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (profileInfo != null) data['profile_info'] = profileInfo!.toJson();
+    if (canInfo != null) data['can_info'] = canInfo!.toJson();
+    if (hostelInfo != null) data['hostel_info'] = hostelInfo!.toJson();
+    if (busInfo != null) data['bus_info'] = busInfo!.toJson();
+    if (addditionalInfo != null) data['addditional_info'] = addditionalInfo!.toJson();
+    data['room_no'] = roomNo;
+    data['html'] = html;
     return data;
   }
 }
+
 
 class ProfileInfo {
   String? splznId;

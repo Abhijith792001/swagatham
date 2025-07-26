@@ -30,7 +30,6 @@ class ProfileController extends GetxController {
     userData.value = await Get.arguments['studentProfileData'];
     print("profile data img${jsonEncode(userData.value)}");
     getStudentImg();
-    
   }
 
   @override
@@ -70,21 +69,29 @@ class ProfileController extends GetxController {
 
   /// Used in ProfilePage to mark user presence
   Future<void> markUs(String applicationNo) async {
-    final _role = await appStorage.read('role');
+    // print("_role.runtimeType_role.runtimeType_role.runtimeType_role.runtimeType ${}");
 
-    switch (_role) {
-      case 'Gate':
-        userRole.value = "1";
-        break;
-      case 'Teacher':
-        userRole.value = "2";
-        break;
-      case 'Warden':
-        userRole.value = "3";
-        break;
-    }
+    // final _role = await appStorage.read('role');
+    // switch (_role) {
+    //   case 'Gate':
+    //     userRole.value = "1";
+    //     break;
+    //   case 'Teacher':
+    //     userRole.value = "2";
+    //     break;
+    //   case 'Warden':
+    //     userRole.value = "3";
+    //     break;
+    // }
 
-    final payload = {"application_no": applicationNo, "role": userRole.value};
+
+
+    print("userRole is =--------------------> ${userRole.value.toString()}");
+
+    final roleNumber = userRole.value.toString();
+
+    final payload = {"application_no": applicationNo, "role":roleNumber};
+    print(payload);
 
     try {
       final appDio.Response response = await apiService.postApi(
@@ -94,9 +101,9 @@ class ProfileController extends GetxController {
 
       if (response.statusCode == 200 && response.data['success'] == true) {
         scanAgain.value = true;
-        successMessage.value = "$_role Verified";
+        // successMessage.value = "$_role Verified";
         fetchStudentData(applicationNo);
-        log('$_role Verified');
+        // log('$_role Verified');
         Get.snackbar(
           "Success",
           "Verification Success",
@@ -115,8 +122,20 @@ class ProfileController extends GetxController {
   }
 
   Future<void> fetchStudentData(String applicationNo) async {
+    final _role = await appStorage.read('role');
+    switch (_role) {
+      case 'Gate':
+        userRole.value = "1";
+        break;
+      case 'Teacher':
+        userRole.value = "2";
+        break;
+      case 'Warden':
+        userRole.value = "3";
+        break;
+    }
     log("Fetching student data for: $applicationNo");
-    final payload = {"application_no": applicationNo};
+    final payload = {"application_no": applicationNo, "role": userRole.value};
 
     try {
       isLoading.value = true;
@@ -126,7 +145,9 @@ class ProfileController extends GetxController {
         payload,
       );
 
-      print("responseresponseresponseresponseresponseresponse ${response}");
+      print(
+        "responseresponseresponseresponseresponseresponse ${response.data}",
+      );
 
       if (response.statusCode == 200) {
         print('${response.statusCode}');
